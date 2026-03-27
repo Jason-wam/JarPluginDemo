@@ -27,7 +27,7 @@ tasks.test {
     useJUnitPlatform()
 }
 
-// 基于提供的代码模式，在jar任务完成后调用JarToDEX.bat 生成可供安卓端调用的dex Jar文件
+// 在jar任务完成后调用JarToDEX.bat 生成可供安卓端调用的dex.jar文件
 gradle.taskGraph.whenReady {
     allTasks.forEach { task ->
         if (task.name == "jar") {

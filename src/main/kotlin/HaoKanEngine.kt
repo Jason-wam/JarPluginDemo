@@ -25,6 +25,8 @@ import java.util.*
  * 5. 如何处理需要 Cookie 认证的 API
  * 6. 如何创建用户偏好设置
  *
+ * 每个插件包中只能包含一个插件
+ *
  * 打包 Jar 文件：[gradle jar](gradle://build.gradle.kts@jar)
  * 或使用命令行：`gradle jar` 或 `./gradlew jar`
  *

@@ -8,7 +8,7 @@ import kotlin.coroutines.suspendCoroutine
 import kotlin.test.Test
 
 class EngineTest {
-    val engine = DemoEngine(JarSourceContextTestImpl("DemoEngine"))
+    val engine = HaoKanEngine(JarSourceContextTestImpl("HaoKanEngine"))
 
     @Test
     fun testGetHomeRecommends() {
@@ -56,7 +56,7 @@ class EngineTest {
     fun testSearch() {
         runBlocking { //因为search是异步的，所以需要用suspendCoroutine转主线程测试
             suspendCancellableCoroutine { continuation ->
-                println("正在获取首页推荐...")
+                println("正在搜索...")
                 engine.search(keywords = "钢铁侠", page = 1, requestConfigs = {
                     //优先读取缓存，如果缓存不存在则从网络获取
                     setCacheMode(CacheMode.CACHE_ELSE_NETWORK)
@@ -86,10 +86,11 @@ class EngineTest {
 
     @Test
     fun testGetDetail() {
-        runBlocking { //因为search是异步的，所以需要用suspendCoroutine转主线程测试
+        runBlocking { //因为getDetail是异步的，所以需要用suspendCoroutine转主线程测试
             suspendCancellableCoroutine { continuation ->
-                println("正在获取首页推荐...")
-                engine.getDetail(detailPageUrl = "http://56dy.com/ju/120496", requestConfigs = {
+                println("正在获取视频详情...")
+                //详情页url生成参考 [src/main/kotlin/HaoKanEngine.kt:468]
+                engine.getDetail(detailPageUrl = "https://haokan.baidu.com/v?vid=7676742717481779479&_format=json", requestConfigs = {
                     //优先读取缓存，如果缓存不存在则从网络获取
                     setCacheMode(CacheMode.CACHE_ELSE_NETWORK)
                 }, onError = {
