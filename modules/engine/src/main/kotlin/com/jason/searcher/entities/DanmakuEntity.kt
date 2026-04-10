@@ -2,12 +2,6 @@ package com.jason.searcher.entities
 
 import org.json.JSONObject
 
-/**
- * @param  text 弹幕内容
- * @param  time 弹幕时间 单位毫秒
- * @param  type 弹幕类型
- * @param  color 弹幕颜色 16进制
- */
 data class DanmakuEntity(
     val text: String,
     val time: Long,

@@ -4,7 +4,6 @@ import com.google.gson.stream.JsonReader
 import org.json.JSONArray
 import org.json.JSONObject
 import com.jason.searcher.utils.putIfNotEmpty
-import okhttp3.Headers
 import java.io.Serializable
 
 class VideoDetailEntity : Serializable {
@@ -67,7 +66,7 @@ class VideoDetailEntity : Serializable {
             while (reader.hasNext()) {
                 when (reader.nextName()) {
                     "id" -> source.id = reader.nextString()
-                    "name" -> source.title = reader.nextString()
+                    "title" -> source.title = reader.nextString()
                     "weight" -> source.weight = reader.nextInt()
                     "videoDataList" -> {
                         reader.beginArray()
@@ -88,11 +87,20 @@ class VideoDetailEntity : Serializable {
             while (reader.hasNext()) {
                 when (reader.nextName()) {
                     "id" -> videoData.id = reader.nextString()
-                    "url" -> videoData.videoUrl = reader.nextString()
-                    "name" -> videoData.title = reader.nextString()
+                    "title" -> videoData.title = reader.nextString()
+                    "subtitle" -> videoData.subtitle = reader.nextString()
+                    "cover" -> videoData.cover = reader.nextString()
+                    "coverRatio" -> videoData.coverRatio = VideoCoverRatio.Fixed(reader.nextDouble())
                     "isLive" -> videoData.isLive = reader.nextBoolean()
                     "canDownload" -> videoData.canDownload = reader.nextBoolean()
                     "regexVideoUrlPattern" -> videoData.regexVideoUrlPattern = reader.nextString()
+
+                    "videoUrl" -> videoData.videoUrl = reader.nextString()
+                    "videoType" -> {
+                        videoData.videoType = reader.nextString().let {
+                            VideoType.valueOf(it)
+                        }
+                    }
 
                     "headers" -> {
                         reader.beginObject()
@@ -101,13 +109,7 @@ class VideoDetailEntity : Serializable {
                                 put(reader.nextName(), reader.nextString())
                             }
                         }
-                    }
-
-
-                    "videoType" -> {
-                        videoData.videoType = reader.nextString().let {
-                            VideoType.valueOf(it)
-                        }
+                        reader.endObject()
                     }
 
                     "sniffPatterns" -> {
@@ -126,54 +128,17 @@ class VideoDetailEntity : Serializable {
             reader.endObject()
             return videoData
         }
-
-        fun createFromJSON(obj: JSONObject): VideoDetailEntity {
-            return VideoDetailEntity().apply {
-                id = obj.optString("id")
-                title = obj.optString("title")
-                subtitle = obj.optString("subtitle")
-                cover = obj.optString("cover")
-                coverRatio = VideoCoverRatio.Fixed(obj.optDouble("coverRatio"))
-                description = obj.optString("description")
-                browserUrl = obj.optString("browserUrl")
-
-                obj.optJSONArray("channels")?.let { array ->
-                    channels.addAll(buildList {
-                        for (i in 0 until array.length()) {
-                            val obj = array.getJSONObject(i)
-                            add(VideoDetailChannelEntity().apply {
-                                id = obj.optString("id")
-                                title = obj.optString("name")
-                                weight = obj.optInt("weight")
-                                obj.optJSONArray("videoDataList")?.let {
-                                    videoDataList.addAll(buildList {
-                                        for (i in 0 until it.length()) {
-                                            add(
-                                                VideoDetailDataEntity.createFromJSON(
-                                                    it.getJSONObject(
-                                                        i
-                                                    )
-                                                )
-                                            )
-                                        }
-                                    })
-                                }
-                            })
-                        }
-                    })
-                }
-
-                sourceId = obj.optString("sourceId")
-                sourceName = obj.optString("sourceName")
-            }
-        }
     }
 
     fun toJSONObject(): JSONObject {
         return JSONObject().apply {
             put("id", id)
             put("title", title)
-            putIfNotEmpty("subtitle", subtitle)
+            if (sourceName.isNotEmpty()) {
+                putIfNotEmpty("subtitle", "$sourceName · $subtitle")
+            } else {
+                putIfNotEmpty("subtitle", subtitle)
+            }
             put("cover", cover)
             put("coverRatio", coverRatio.value)
             putIfNotEmpty("description", description)

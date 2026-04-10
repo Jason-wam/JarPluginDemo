@@ -1,13 +1,5 @@
 package com.jason.searcher.entities.home
 
 enum class HomeItemDataType {
-    /**
-     * 搜索关键字
-     */
-    SEARCH_WORDS,
-
-    /**
-     * 详情页URL
-     */
-    DETAIL_PAGE_URL
+    SEARCH_WORDS, DETAIL_PAGE_URL,CLASS_PAGE_ENTITY
 }

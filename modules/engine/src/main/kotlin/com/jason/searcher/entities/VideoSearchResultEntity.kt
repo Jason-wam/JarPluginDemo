@@ -21,14 +21,7 @@ class VideoSearchResultEntity : Serializable {
     var sourceName: String = ""
 
     enum class DetailPageUrlType {
-        /**
-         * 视频直链
-         */
-        Video,
-        /**
-         * 详情页面
-         */
-        DetailPage
+        Video, DetailPage
     }
 
     fun toJSONObject(): JSONObject {

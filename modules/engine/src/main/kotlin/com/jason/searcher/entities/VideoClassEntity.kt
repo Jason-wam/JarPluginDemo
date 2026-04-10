@@ -1,12 +1,17 @@
 package com.jason.searcher.entities
 
+import com.jason.searcher.base.BaseWebSource.Method
 import org.json.JSONObject
-import com.jason.searcher.utils.putIfNotEmpty
 import java.io.Serializable
 
+fun buildClassEntities(block: ArrayList<VideoClassEntity>.() -> Unit) = ArrayList<VideoClassEntity>().apply(block)
 
-fun MutableList<VideoClassEntity>.append(title: String, url: String) {
-    add(VideoClassEntity.build(title, url))
+fun ArrayList<VideoClassEntity>.append(name: String, url: String, firstPageUrl: String = "") = apply {
+    add(VideoClassEntity().apply {
+        this.url = url
+        this.title = name
+        this.firstPageUrl = firstPageUrl
+    })
 }
 
 class VideoClassEntity : Serializable {
@@ -51,16 +56,11 @@ class VideoClassEntity : Serializable {
 
     var weight: Int = 0
 
-    object Method {
-        const val GET = 0
-        const val POST = 1
-    }
-
     fun toJSONObject(): JSONObject {
         return JSONObject().apply {
             put("url", url)
             put("title", title)
-            putIfNotEmpty("firstPageUrl", firstPageUrl)
+            put("firstPageUrl", firstPageUrl)
             put("weight", weight)
             if (pageOffset != 0) {
                 put("pageOffset", pageOffset)
@@ -100,13 +100,6 @@ class VideoClassEntity : Serializable {
                         extraHeaders[key] = it.optString(key)
                     }
                 }
-            }
-        }
-
-        fun build(title: String, url: String): VideoClassEntity {
-            return VideoClassEntity().apply {
-                this.title = title
-                this.url = url
             }
         }
     }

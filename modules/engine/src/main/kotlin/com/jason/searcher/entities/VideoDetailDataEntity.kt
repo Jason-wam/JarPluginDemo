@@ -3,7 +3,6 @@ package com.jason.searcher.entities
 import org.json.JSONArray
 import org.json.JSONObject
 import com.jason.searcher.utils.putIfNotEmpty
-import okhttp3.Headers
 import java.io.Serializable
 
 class VideoDetailDataEntity : Cloneable, Serializable {

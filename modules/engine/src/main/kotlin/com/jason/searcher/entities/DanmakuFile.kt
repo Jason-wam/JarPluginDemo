@@ -7,7 +7,7 @@ import java.io.Serializable
 
 open class DanmakuFile(open val file: File) : Serializable, Closeable {
     @Transient
-    private var writer: BufferedWriter = file.bufferedWriter()
+    private val writer: BufferedWriter = file.bufferedWriter()
 
     fun appendDanmaku(danmaku: DanmakuEntity): DanmakuFile {
         writer.appendLine(danmaku.toJSONObject().toString())
