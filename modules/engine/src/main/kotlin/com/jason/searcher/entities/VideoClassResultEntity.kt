@@ -10,8 +10,7 @@ class VideoClassResultEntity : Serializable {
     var cover: String = ""
     var coverRatio: VideoCoverRatio = VideoCoverRatio.Auto
 
-    var note: String = ""
-    var date: String = ""
+    var score: String = ""
     var duration: String = ""
     var detailPageUrl: String = ""
     var detailPageUrlType: DetailPageUrlType = DetailPageUrlType.DetailPage
@@ -30,8 +29,7 @@ class VideoClassResultEntity : Serializable {
         put("cover", cover)
         put("coverRatio", coverRatio.value)
 
-        put("note", note)
-        put("date", date)
+        put("score", score)
         put("duration", duration)
         put("detailPageUrl", detailPageUrl)
         put("detailPageUrlType", detailPageUrlType.name)
