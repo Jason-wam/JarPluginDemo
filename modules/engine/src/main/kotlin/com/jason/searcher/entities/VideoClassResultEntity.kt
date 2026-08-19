@@ -19,7 +19,7 @@ class VideoClassResultEntity : Serializable {
     var sourceName: String = ""
 
     enum class DetailPageUrlType {
-        Video, DetailPage
+        Video, DetailPage, IMAGE
     }
 
     fun toJSONObject(): JSONObject = JSONObject().apply {

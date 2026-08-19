@@ -1,5 +1,5 @@
 package com.jason.searcher.entities
 
 enum class VideoType {
-    Direct, Sniff, Decode, Regex, DetailPage
+    Direct, Sniff, Decode, Regex, DetailPage, IMAGE
 }
